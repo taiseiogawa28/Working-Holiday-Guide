@@ -1,0 +1,19 @@
+body{   /* body = ページ全体に適応する設定 */
+    font-family: Arial, sans-serif; 
+    /* フォントのデザインを指定 */
+    /* まずArialフォントを使うが、なかった場合にsans-serif */
+    max-width: 600px;
+    /* 横幅を最大600ピクセルに */
+    margin: 40px auto;
+    /* 上下40ピクセルの余白、左右はautoによってブラウザで自動調整 */
+}
+h1 {   /* h1に適応される設定 */
+    text-align: center;
+    /* 文字を中央寄せ */
+}
+li{  /* リスト部分の設定 */
+    margin: 15px 0;
+    /* 上下15px, 左右0の余白 */
+    font-size: 18px;
+    /* 文字サイズ18px */
+}
