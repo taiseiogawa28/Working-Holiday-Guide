@@ -15,29 +15,33 @@
         <!-- 出力画面部分の開始 -->
             <h1>🌎Working Holiday Guide<br>
                 - For Japanese -
-            </h1>
-            <!-- hは見出しheading -->
-            <h2>Pre-arrival Tasks</h2>
-            <!-- 中見出し -->
+            </h1>  <!-- hは見出しheading -->
+            <h2>Pre-arrival Tasks</h2>  <!-- 中見出し -->
+            
+            <p id="progress-text">Progress: 0%</p> <!-- Progress : 0%を表示、id="progress-text"は、このpタグへの名づけで、理由はJavaScriptから探すため-->
+            
             <ul> <!-- リスト開始(箇条書き) -->
                 <li> <!-- リストの項目 -->
-                    <input type="checkbox"> <!-- チェックボックスの出力 -->
+                    <input type="checkbox" class="task"> <!-- チェックボックスの出力 -->
                     Apply for Visa <!-- そのまま表示 -->
                 </li>
                 <li>
-                    <input type="checkbox">
+                    <input type="checkbox" class="task">
                     Buy Flight Ticket
                 </li>
                 <li>
-                    <input type="checkbox">
+                    <input type="checkbox" class="task">
                     Arrange Accommodation
                 </li>
                 <li>
-                    <input type="checkbox">
+                    <input type="checkbox" class="task">
                     Prepare Resume
                 </li>
             </ul>
-            <!-- リスト(箇条書き終了) -->
+            <!-- リスト(箇条書き終了) --> 
+            
+            <script src="script.js"></script>  <!--　JavaScriptを読み込む -->
+           
             <h2>After Arrival</h2>
             <ul>
                 <li>
