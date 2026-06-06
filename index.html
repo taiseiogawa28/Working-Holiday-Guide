@@ -20,6 +20,10 @@
             
             <p id="progress-text">Progress: 0%</p> <!-- Progress : 0%を表示、id="progress-text"は、このpタグへの名づけで、理由はJavaScriptから探すため-->
             
+            <div class="progress-container">   <!--　divで箱を設置　-->
+                <div id="progress-bar"></div>  <!-- さらに内側に箱、これを進捗バーとして利用する -->
+            </div>
+
             <ul> <!-- リスト開始(箇条書き) -->
                 <li> <!-- リストの項目 -->
                     <input type="checkbox" class="task"> <!-- チェックボックスの出力 -->
@@ -40,15 +44,29 @@
             </ul>
             <!-- リスト(箇条書き終了) --> 
             
-            <script src="script.js"></script>  <!--　JavaScriptを読み込む -->
            
-            <h2>After Arrival</h2>
+            <h2>Post-Arrival</h2>
             <ul>
                 <li>
-                    <input type="checkbox">
+                    <input type="checkbox" class = "task">
+                    Open Bank Account
+                </li>
+                <li>
+                    <input type="checkbox" class = "task">
                     Apply for IRD Number
                 </li>
+                <li>
+                    <input type="checkbox" class = "task">
+                    Buy SIM Card
+                </li>
+                <li>
+                    <input type="checkbox" class = "task">
+                    Find a Job
+                </li>
             </ul>     
+            
+            <script src="script.js"></script>  <!--　JavaScriptを読み込む -->
+
         </body>
         <!-- 画面部分終了 -->
 </html>

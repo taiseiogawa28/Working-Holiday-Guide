@@ -7,13 +7,30 @@ body{   /* body = ページ全体に適応する設定 */
     margin: 40px auto;
     /* 上下40ピクセルの余白、左右はautoによってブラウザで自動調整 */
 }
+
 h1 {   /* h1に適応される設定 */
     text-align: center;
     /* 文字を中央寄せ */
 }
+
 li{  /* リスト部分の設定 */
     margin: 15px 0;
     /* 上下15px, 左右0の余白 */
     font-size: 18px;
     /* 文字サイズ18px */
+}
+
+.progress-container {
+    width: 100%; /*親要素であるbodyの幅の100% = 600px  */
+    height: 25px; 
+    background-color: #ddd; /* #ddd カラーコードで灰色系の色、カラーコードを使うと
+    色の名前を直接指定するよりも細かい調整ができる  */
+    border-radius: 10px; /*　角を丸くする  */
+}
+
+#progress-bar {
+    width: 0%;
+    height: 100%; /*親要素であるprogress-containerの高さの100%つまり25pxになる*/
+    background-color: green;
+    border-radius: 10px;
 }

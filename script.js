@@ -2,6 +2,8 @@ const tasks = document.querySelectorAll(".task");
 // 開いているHTMLページ全体からclass="task"がついている要素を全部探す
 const progressText = document.getElementById("progress-text");
 // HTML内の<p id="progress-text">Progress: 0%</p>取得
+const progressBar = document.getElementById("progress-bar"); 
+// <div id="progress-bar"></div>を取得
 
 function updateProgress() {
 
@@ -19,6 +21,9 @@ const progress = Math.round((checkedCount / tasks.length)*100);
 
 progressText.textContent = "Progress: " + progress + "%"; 
 // Progress表示を更新
+progressBar.style.width = progress + "%";
+// 進捗バーの表示を更新
+
 }
 
 tasks.forEach(function(task){ 
