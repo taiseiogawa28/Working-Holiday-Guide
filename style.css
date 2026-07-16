@@ -34,3 +34,23 @@ li{  /* リスト部分の設定 */
     background-color: green;
     border-radius: 10px;
 }
+
+.task-input-area {
+    display: flex;   /* 子要素（ここでは、inputとbutton）を横方向に並べる、これがないと縦並びで表示される */
+    gap: 10px;       /* 子要素同士の間隔 */
+    margin-bottom: 20px;  /* 下側の余白 */
+}
+
+#new-task-input {  
+/* id =  new-task-input の入力欄を装飾*/
+    flex: 1;    /* 残ったスペースを入力欄にすべて使う（例）画面1000px, ボタン150pxのとき、残りの850pxを対象(入力欄)に使う */
+    padding: 10px;   /* 内側(入力欄内)の余白　※marginは外側、paddingが内側 */
+    font-size: 16px;   /* 入力文字サイズ */
+}
+
+#add-task-button {
+    /* ボタン専用の設定 */
+    padding: 10px 16px; /* ボタン内側余白　上下10px　左右16px */
+    font-size: 16px;
+    cursor: pointer;    /* マウスアイコンがボタン上で変化 */
+}

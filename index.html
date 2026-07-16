@@ -16,14 +16,15 @@
             <h1>🌎Working Holiday Guide<br>
                 - For Japanese -
             </h1>  <!-- hは見出しheading -->
-            <h2>Pre-arrival Tasks</h2>  <!-- 中見出し -->
-            
+
             <p id="progress-text">Progress: 0%</p> <!-- Progress : 0%を表示、id="progress-text"は、このpタグへの名づけで、理由はJavaScriptから探すため-->
             
             <div class="progress-container">   <!--　divで箱を設置　-->
                 <div id="progress-bar"></div>  <!-- さらに内側に箱、これを進捗バーとして利用する -->
             </div>
-
+            
+            <h2>Pre-arrival Tasks</h2>  <!-- 中見出し -->
+            
             <ul> <!-- リスト開始(箇条書き) -->
                 <li> <!-- リストの項目 -->
                     <input type="checkbox" class="task"> <!-- チェックボックスの出力 -->
@@ -46,7 +47,21 @@
             
            
             <h2>Post-Arrival</h2>
-            <ul>
+
+             <div class="task-input-area">      <!-- divで箱を設置 -->
+                <input
+                    type="text"
+                    id="new-task-input"
+                    placeholder="Enter a new task"
+                >
+                <!-- タスクの入力欄 -->
+
+                <button id="add-task-button">   <!--  Add Task ボタン-->
+                    Add Task
+                </button>
+            </div>
+
+            <ul id="post-arrival-list">
                 <li>
                     <input type="checkbox" class = "task">
                     Open Bank Account
