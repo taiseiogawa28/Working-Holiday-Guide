@@ -58,19 +58,35 @@ function addTask() {
 
     const listItem = document.createElement("li"); // HTMLに新しい空のリストを作成し変数に保存
     const checkbox = document.createElement("input"); // 空のinputも作成し保存
+    const deleteButton = document.createElement("button"); // 新しいボタンを作る
+
 
     checkbox.type = "checkbox"; // inputをcheckboxとして定義
     checkbox.className = "task"; // 他のcheckboxと一緒に処理できるようにクラス付け
-
+    deleteButton.textContent = "✖"; //ボタンの中の文字を設定
+    deleteButton.style.marginLeft = "10px"; //ボタンの左側に余白を追加
+    
     listItem.appendChild(checkbox); // 先ほど作成したリストlistItemにcheckboxを子要素として追加
     listItem.appendChild(document.createTextNode(" " + taskText)); 
     //taskTextに保存していた入力内容を先頭に空白をつけてリストに追加（チェックボックスと文字の間に余白ができるように）
+    listItem.appendChild(deleteButton); // 削除ボタンをリストliの子要素として追加
 
     postArrivalList.appendChild(listItem); // 新しく作成したリストをHTMLの<ul id="post-arrival-list">に追加
 
     checkbox.addEventListener("change", updateProgress); 
     //新しく作ったチェックボックスにも進捗率更新のupdateProgressを実行
 
+    
+    deleteButton.addEventListener("click", 
+        function(){
+            listItem.remove(); 
+            updateProgress();
+        }
+    );
+    // ボタンがクリックされたら、そのアイテムをリストから削除
+    //　要素数が変わったので、進捗率の再計算
+
+    
     newTaskInput.value = ""; 
     // 処理が終わったので入力欄を元に戻す、valueは代入して内容を書き換えることもできる
 
