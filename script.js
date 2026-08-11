@@ -16,6 +16,17 @@ const addTaskButton = document.getElementById("add-task-button");
 const postArrivalList = document.getElementById("post-arrival-list"); 
 // <ul id="post-arrival-list">を取得
 
+const savedTasks = localStorage.getItem("customTasks"); // localStorageから保存されたタスクを取得
+
+let customTasks = []; // 追加されたタスクを保存する配列を作成
+
+if (savedTasks !== null) { // localStorageに保存されたタスクがある場合
+    customTasks = JSON.parse(savedTasks); // JSON文字列を配列に変換してcustomTasksに保存
+}
+
+customTasks.forEach(function(taskText) { // 保存されたタスクを1つずつ取り出す
+    createTaskElement(taskText); // タスクを作成する関数を呼び出す
+}); 
 
 function updateProgress() {
     const tasks = document.querySelectorAll(".task");
@@ -48,48 +59,57 @@ initialTasks.forEach(function(task){
 });
 
 
-function addTask() {
-    const taskText = newTaskInput.value.trim();
-    // 入力欄に入力されている内容をvalueで取得し保存, trimでもし前後に余分なスペース（空白文字など）があった場合に削除
+// ページを開いた際、localStorageに保存されたタスクを表示する
+function createTaskElement(taskText) {
+    const listItem = document.createElement("li"); // <li></li>を作成
+    const checkbox = document.createElement("input"); // <input>を作成
+    const deleteButton = document.createElement("button"); // <button></button>を作成
 
-    if (taskText === "") {
-        return;
-    } // もし入力欄が空なら終了
+    checkbox.type = "checkbox"; // <input type="checkbox">にする
+    checkbox.className = "task"; // class="task"をつける
+    deleteButton.textContent = "✖"; // ボタンのテキストを設定
+    deleteButton.style.marginLeft = "10px"; // ボタンの左側に余白を追加
 
-    const listItem = document.createElement("li"); // HTMLに新しい空のリストを作成し変数に保存
-    const checkbox = document.createElement("input"); // 空のinputも作成し保存
-    const deleteButton = document.createElement("button"); // 新しいボタンを作る
+    listItem.appendChild(checkbox); // <li>の中にチェックボックスを追加
+    listItem.appendChild(document.createTextNode(" " + taskText)); // <li>の中にタスクのテキストを追加
+    listItem.appendChild(deleteButton); // <li>の中に削除ボタンを追加
 
+    postArrivalList.appendChild(listItem); // <ul>の中に<li>を追加
 
-    checkbox.type = "checkbox"; // inputをcheckboxとして定義
-    checkbox.className = "task"; // 他のcheckboxと一緒に処理できるようにクラス付け
-    deleteButton.textContent = "✖"; //ボタンの中の文字を設定
-    deleteButton.style.marginLeft = "10px"; //ボタンの左側に余白を追加
-    
-    listItem.appendChild(checkbox); // 先ほど作成したリストlistItemにcheckboxを子要素として追加
-    listItem.appendChild(document.createTextNode(" " + taskText)); 
-    //taskTextに保存していた入力内容を先頭に空白をつけてリストに追加（チェックボックスと文字の間に余白ができるように）
-    listItem.appendChild(deleteButton); // 削除ボタンをリストliの子要素として追加
+    checkbox.addEventListener("change", updateProgress); //　チェックボックスが変わったら、updateProgress()を実行する
 
-    postArrivalList.appendChild(listItem); // 新しく作成したリストをHTMLの<ul id="post-arrival-list">に追加
+    deleteButton.addEventListener("click", function() { // 削除ボタンがクリックされたら
+        listItem.remove(); // <li>を削除する
 
-    checkbox.addEventListener("change", updateProgress); 
-    //新しく作ったチェックボックスにも進捗率更新のupdateProgressを実行
-
-    
-    deleteButton.addEventListener("click", 
-        function(){
-            listItem.remove(); 
-            updateProgress();
+        customTasks = customTasks.filter(function(task) { // 配列から削除されたタスクを取り除く
+            return task !== taskText; // 削除されたタスク以外を残す
+        });
+        
+        localStorage.setItem("customTasks", JSON.stringify(customTasks)); // 配列をJSON文字列に変換してlocalStorageに保存
+        
+        updateProgress(); // 削除後に進捗率を更新する
         }
     );
-    // ボタンがクリックされたら、そのアイテムをリストから削除
-    //　要素数が変わったので、進捗率の再計算
-
-    
-    newTaskInput.value = ""; 
-    // 処理が終わったので入力欄を元に戻す、valueは代入して内容を書き換えることもできる
-
 }
+    function addTask() { // 新しいタスクを追加する関数
+    const taskText =
+        newTaskInput.value.trim(); // 入力欄の値を取得し、前後の空白を削除
+
+    if (taskText === "") { // 入力欄が空の場合は何もしない
+        return;
+    }
+
+    createTaskElement(taskText); // 新しいタスクを作成する関数を呼び出す
+
+    customTasks.push(taskText); // 配列に新しいタスクを追加
+
+    localStorage.setItem( // 配列をJSON文字列に変換してlocalStorageに保存
+        "customTasks",
+        JSON.stringify(customTasks)
+    );
+
+    newTaskInput.value = ""; // 入力欄を空にする
+}
+
 
 addTaskButton.addEventListener("click", addTask); //Add TaskボタンがクリックされたらaddTask関数を実行
