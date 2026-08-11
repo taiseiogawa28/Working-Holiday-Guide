@@ -18,6 +18,15 @@ const postArrivalList = document.getElementById("post-arrival-list");
 
 const savedTasks = localStorage.getItem("customTasks"); // localStorageから保存されたタスクを取得
 
+const savedTaskStates = localStorage.getItem("taskStates"); // localStorageから保存されたタスクの状態を取得
+
+let taskStates = []; // タスクの状態を保存する配列を作成
+
+if (savedTaskStates !== null) { // localStorageに保存されたタスクの状態がある場合
+    taskStates = JSON.parse(savedTaskStates); // JSON文字列を配列に変換してtaskStatesに保存
+} 
+
+
 let customTasks = []; // 追加されたタスクを保存する配列を作成
 
 if (savedTasks !== null) { // localStorageに保存されたタスクがある場合
@@ -49,13 +58,36 @@ function updateProgress() {
 
 }
 
+// ページを閉じる前にタスクの状態を保存する
+function saveTaskStates () {
+    const tasks = document.querySelectorAll(".task");  // class="task"がついている要素を全部探す
+    
+    const taskStates = []; // タスクの状態を保存する配列を作成
+    
+    tasks.forEach(function(task) {  // チェックボックスの状態を配列に保存 true: チェック済み, false: 未チェック
+        taskStates.push(task.checked);
+    });
+    
+    localStorage.setItem("taskStates", JSON.stringify(taskStates)); // 配列をJSON文字列に変換してlocalStorageに保存
+}
 
-const initialTasks = document.querySelectorAll(".task");
+const initialTasks = document.querySelectorAll(".task"); // ページを開いた際、localStorageに保存されたタスクを表示する
 
-initialTasks.forEach(function(task){ 
-    // ページを開いた際、各チェックボックスについてイベントが発生したかどうか確認する
-    task.addEventListener("change", updateProgress);
-    // チェックボックスが変わったら、updateProgress()を実行する
+//　保存したチェック状態を復元
+initialTasks.forEach(function(task, index) { // ページを開いた際、localStorageに保存されたタスクの状態を復元する
+    if (taskStates[index] !== undefined) { // タスクの状態が保存されている場合
+        task.checked = taskStates[index]; // チェックボックスの状態を復元する
+    }
+});   
+
+updateProgress(); // 進捗率を再計算することで、ページを開いた際に進捗率を正しく表示する
+
+// チェック状態が変わったときの処理
+initialTasks.forEach(function(task){  // ページを開いた際、localStorageに保存されたタスクの状態を復元する
+    task.addEventListener("change", function() {  
+        updateProgress();  // チェックボックスの状態が変わったら進捗率を更新する
+        saveTaskStates();  // チェックボックスの状態を保存する  
+    });
 });
 
 
@@ -76,7 +108,10 @@ function createTaskElement(taskText) {
 
     postArrivalList.appendChild(listItem); // <ul>の中に<li>を追加
 
-    checkbox.addEventListener("change", updateProgress); //　チェックボックスが変わったら、updateProgress()を実行する
+    checkbox.addEventListener("change", function() {  // チェックボックスが変わったら、updateProgress()を実行する
+        updateProgress(); // チェックボックスの状態が変わったら進捗率を更新する
+        saveTaskStates();  // チェックボックスの状態を保存する  
+    });
 
     deleteButton.addEventListener("click", function() { // 削除ボタンがクリックされたら
         listItem.remove(); // <li>を削除する
@@ -87,6 +122,7 @@ function createTaskElement(taskText) {
         
         localStorage.setItem("customTasks", JSON.stringify(customTasks)); // 配列をJSON文字列に変換してlocalStorageに保存
         
+        saveTaskStates(); // 削除後にタスクの状態を保存する
         updateProgress(); // 削除後に進捗率を更新する
         }
     );
