@@ -127,7 +127,9 @@ function createTaskElement(taskText) {
         }
     );
 }
-    function addTask() { // 新しいタスクを追加する関数
+
+// 新しいタスクを追加する関数
+function addTask() { 
     const taskText =
         newTaskInput.value.trim(); // 入力欄の値を取得し、前後の空白を削除
 
@@ -145,7 +147,17 @@ function createTaskElement(taskText) {
     );
 
     newTaskInput.value = ""; // 入力欄を空にする
-}
 
+    newTaskInput.focus(); // 入力欄にフォーカスを戻す
+}
+ 
 
 addTaskButton.addEventListener("click", addTask); //Add TaskボタンがクリックされたらaddTask関数を実行
+
+// Enterキーが押されたらaddTask関数を実行
+newTaskInput.addEventListener("keydown", function(event) {  
+    if (event.key == "Enter") {
+        addTask(); // Enterキーが押されたらaddTask関数を実行
+    }
+
+});
