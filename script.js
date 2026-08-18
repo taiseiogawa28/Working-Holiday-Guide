@@ -96,15 +96,22 @@ function createTaskElement(taskText) {
     const listItem = document.createElement("li"); // <li></li>を作成
     const checkbox = document.createElement("input"); // <input>を作成
     const deleteButton = document.createElement("button"); // <button></button>を作成
+    const editButton = document.createElement("button"); // <button></button>を作成
+    const taskTextNode = document.createTextNode("" + taskText); // タスクのテキストを作成
+    
 
     checkbox.type = "checkbox"; // <input type="checkbox">にする
     checkbox.className = "task"; // class="task"をつける
     deleteButton.textContent = "✖"; // ボタンのテキストを設定
     deleteButton.style.marginLeft = "10px"; // ボタンの左側に余白を追加
+    editButton.textContent = "Edit"; // ボタンのテキストを設定
+    editButton.style.marginLeft = "10px"; // ボタンの左側に余白を追加
 
     listItem.appendChild(checkbox); // <li>の中にチェックボックスを追加
-    listItem.appendChild(document.createTextNode(" " + taskText)); // <li>の中にタスクのテキストを追加
+    listItem.appendChild(taskTextNode); // <li>の中にタスクのテキストを追加
+    listItem.appendChild(editButton); // <li>の中に編集ボタンを追加
     listItem.appendChild(deleteButton); // <li>の中に削除ボタンを追加
+    
 
     postArrivalList.appendChild(listItem); // <ul>の中に<li>を追加
 
@@ -112,6 +119,45 @@ function createTaskElement(taskText) {
         updateProgress(); // チェックボックスの状態が変わったら進捗率を更新する
         saveTaskStates();  // チェックボックスの状態を保存する  
     });
+
+    editButton.addEventListener("click", function() { // 編集ボタンがクリックされたら
+        
+        if (editButton.textContent === "Edit") { // 編集ボタンのテキストが"Edit"の場合})
+            const editInput = document.createElement("input"); // <input>を作成
+
+            editInput.type = "text"; // <input type="text">にする
+            editInput.value = taskText; // <input>の値をタスクのテキストにする
+
+            listItem.replaceChild(editInput, taskTextNode); // <li>の中のタスクのテキストを<input>に置き換える
+
+            editButton.textContent = "Save"; // ボタンのテキストを変更
+        } else {
+            const editInput = listItem.querySelector('input[type="text"]'); // <li>の中の<input type="text">を取得
+
+            const newTaskText = editInput.value.trim(); // <input>の値を取得し、前後の空白を削除
+
+            if (newTaskText === "") { // 入力欄が空の場合は何もしない
+                return;
+            }
+
+            const taskIndex = customTasks.indexOf(taskText); // 配列の中のタスクのインデックスを取得
+
+            if (taskIndex !== -1) { // 配列の中にタスクが存在する場合
+                customTasks[taskIndex] = newTaskText; // 配列の中のタスクを新しいタスクに置き換える    
+            }
+
+            taskTextNode.textContent = " " + newTaskText; // タスクのテキストを更新
+
+            listItem.replaceChild(taskTextNode, editInput); // <li>の中の<input>をタスクのテキストに置き換える
+
+            localStorage.setItem("customTasks", JSON.stringify(customTasks)); // 配列をJSON文字列に変換してlocalStorageに保存
+
+            taskText = newTaskText; // タスクのテキストを更新
+
+            editButton.textContent = "Edit"; // ボタンのテキストを変更
+        }
+    });
+
 
     deleteButton.addEventListener("click", function() { // 削除ボタンがクリックされたら
         listItem.remove(); // <li>を削除する
