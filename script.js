@@ -16,9 +16,22 @@ const addTaskButton = document.getElementById("add-task-button");
 const postArrivalList = document.getElementById("post-arrival-list"); 
 // <ul id="post-arrival-list">を取得
 
-const savedTasks = localStorage.getItem("customTasks"); // localStorageから保存されたタスクを取得
+const filterAllButton = document.getElementById("filter-all"); 
+// <button id="filter-all">All</button>を取得
 
-const savedTaskStates = localStorage.getItem("taskStates"); // localStorageから保存されたタスクの状態を取得
+const filterActiveButton = document.getElementById("filter-active"); 
+// <button id="filter-active">Active</button>を取得
+
+const filterCompleteButton = document.getElementById("filter-completed"); 
+// <button id="filter-completed">Completed</button>を取得
+
+let currentFilter = "all";
+
+const savedTasks = localStorage.getItem("customTasks"); 
+// localStorageから保存されたタスクを取得
+
+const savedTaskStates = localStorage.getItem("taskStates"); 
+// localStorageから保存されたタスクの状態を取得
 
 let taskStates = []; // タスクの状態を保存する配列を作成
 
@@ -58,6 +71,49 @@ function updateProgress() {
 
 }
 
+function applyFilter() {
+    const tasks = document.querySelectorAll(".task");
+
+    tasks.forEach(function(task) {
+
+        if(currentFilter === "all") {
+            task.parentElement.style.display = ""; // すべてのタスクを表示する
+
+        } else if (currentFilter ==="active") {
+            if(task.checked) {
+                task.parentElement.style.display = "none"; // チェック済みのタスクは非表示にする            
+            } else {
+                task.parentElement.style.display = ""; // 未チェックのタスクは表示する
+            }
+
+        } else if (currentFilter === "completed") {
+            if(task.checked) {
+                task.parentElement.style.display = ""; // チェック済みのタスクは表示する
+            } else {
+                task.parentElement.style.display = "none"; // 未チェックのタスクは非表示にする
+            }
+        }
+    });
+}
+
+function updateFilterButtons() {
+
+    filterAllButton.classList.remove("active-filter"); // すべてのフィルターボタンからactive-filterクラスを削除
+    filterActiveButton.classList.remove("active-filter");   
+    filterCompleteButton.classList.remove("active-filter");
+
+    if (currentFilter === "all") {
+        filterAllButton.classList.add("active-filter"); // "all"フィルターボタンにactive-filterクラスを追加
+        
+    } else if ( currentFilter === "active") {
+        filterActiveButton.classList.add("active-filter"); // "active"フィルターボタンにactive-filterクラスを追加
+
+    } else if ( currentFilter === "completed") {
+        filterCompleteButton.classList.add("active-filter"); // "completed"フィルターボタンにactive-filterクラスを追加
+
+    }
+}
+
 // ページを閉じる前にタスクの状態を保存する
 function saveTaskStates () {
     const tasks = document.querySelectorAll(".task");  // class="task"がついている要素を全部探す
@@ -80,13 +136,15 @@ initialTasks.forEach(function(task, index) { // ページを開いた際、local
     }
 });   
 
+
 updateProgress(); // 進捗率を再計算することで、ページを開いた際に進捗率を正しく表示する
 
 // チェック状態が変わったときの処理
 initialTasks.forEach(function(task){  // ページを開いた際、localStorageに保存されたタスクの状態を復元する
     task.addEventListener("change", function() {  
         updateProgress();  // チェックボックスの状態が変わったら進捗率を更新する
-        saveTaskStates();  // チェックボックスの状態を保存する  
+        saveTaskStates();  // チェックボックスの状態を保存する 
+        applyFilter(); // フィルターを適用することで、チェック状態が変わったときにフィルターが正しく反映される 
     });
 });
 
@@ -118,6 +176,7 @@ function createTaskElement(taskText) {
     checkbox.addEventListener("change", function() {  // チェックボックスが変わったら、updateProgress()を実行する
         updateProgress(); // チェックボックスの状態が変わったら進捗率を更新する
         saveTaskStates();  // チェックボックスの状態を保存する  
+        applyFilter(); // フィルターを適用することで、チェック状態が変わったときにフィルターが正しく反映される 
     });
 
     editButton.addEventListener("click", function() { // 編集ボタンがクリックされたら
@@ -207,3 +266,28 @@ newTaskInput.addEventListener("keydown", function(event) {
     }
 
 });
+
+// フィルターボタンのクリックイベントリスナーを追加
+filterAllButton.addEventListener("click", function() {
+    currentFilter = "all"; // "all"に変更
+    applyFilter();
+    updateFilterButtons(); // フィルターボタンの状態を更新
+});
+
+// フィルターボタンのクリックイベントリスナーを追加
+filterActiveButton.addEventListener("click", function() {
+    currentFilter = "active"; // "active"に変更
+    applyFilter();
+    updateFilterButtons(); // フィルターボタンの状態を更新
+});
+
+// フィルターボタンのクリックイベントリスナーを追加
+filterCompleteButton.addEventListener("click", function() {
+    currentFilter = "completed"; // "completed"に変更
+    applyFilter();
+    updateFilterButtons(); // フィルターボタンの状態を更新
+});
+    
+updateFilterButtons(); 
+// フィルターボタンの状態を更新することで,ページを開いた際に選択中のフィルターボタンを強調表示する
+

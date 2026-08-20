@@ -4,11 +4,11 @@
     <!-- ユーザーには見えない設定部分 -->
         <meta charset="UTF-8"> 
         <!-- 日本語を正しく表示(文字化け防止) -->
-        <meta name="viewpoint" content="width=device-width, initial-scale=1.0"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
         <!-- スマホでも見やすくする設定 -->
         <title>Working Holiday Guide</title> 
         <!-- ブラウザのタブに表示される名前 -->
-        <link rel="stylesheet" href="style.css"> VS
+        <link rel="stylesheet" href="style.css"> 
         <!-- style.cssの読み込み -->
     </head>
         <body> 
@@ -22,7 +22,13 @@
             <div class="progress-container">   <!--　divで箱を設置　-->
                 <div id="progress-bar"></div>  <!-- さらに内側に箱、これを進捗バーとして利用する -->
             </div>
-            
+
+            <div class="task-filters">
+                <button id="filter-all">All</button>
+                <button id="filter-active">Active</button>
+                <button id="filter-completed">Completed</button>
+            </div>
+
             <h2>Pre-arrival Tasks</h2>  <!-- 中見出し -->
             
             <ul> <!-- リスト開始(箇条書き) -->

@@ -54,3 +54,19 @@ li{  /* リスト部分の設定 */
     font-size: 16px;
     cursor: pointer;    /* マウスアイコンがボタン上で変化 */
 }
+
+.task-filters {
+    display: flex;   /* 子要素（ここでは、inputとbutton）を横方向に並べる、これがないと縦並びで表示される */
+    gap: 10px;       /* 子要素同士の間隔 */
+    margin: 20px 0;  /* 上下の余白 */
+}
+
+.task-filters button {
+    padding: 8px 14px; /* ボタン内側余白　上下8px　左右14px */
+    cursor: pointer;    /* マウスアイコンがボタン上で変化 */
+}
+
+.active-filter {
+    font-weight: bold; /* 太字にする */
+    border: 2px solid black; /* 下線を引く */
+}

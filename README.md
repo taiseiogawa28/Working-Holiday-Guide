@@ -11,8 +11,9 @@ User can organise pre-arrival and post-arrival tasks while tracking their progre
 - Pre-arrival and post-arrival task checklists
 - Dynamic progress tracking
 - Add, edit and delete custom tasks
-- Save tasks and progress using localStorage
+- Save tasks and checkbox states using localStorage
 - Add tasks with the Enter key
+- Filter tasks by All, Active, and Completed
 
 ## Technologies
 
