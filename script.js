@@ -51,14 +51,13 @@ if (savedTasks !== null) { // localStorageに保存されたタスクがある�
     customTasks = JSON.parse(savedTasks); // JSON文字列を配列に変換してcustomTasksに保存
 }
 
-// ページを開いた際、localStorageに保存されたタスクを表示する
-customTasks.pre.forEach(function(taskText) {
-    createTaskElement(taskText, preArrivalList, "pre");
+// ページを開いた際に、localStorageに保存されたタスクを表示する
+customTasks.pre.forEach(function(task) {
+    createTaskElement(task, preArrivalList, "pre");
 });
-
-// ページを開いた際、localStorageに保存されたタスクを表示する
-customTasks.post.forEach(function(taskText) {
-    createTaskElement(taskText, postArrivalList, "post");
+// ページを開いた際に、localStorageに保存されたタスクを表示する
+customTasks.post.forEach(function(task) {
+    createTaskElement(task, postArrivalList, "post");
 });
 
 function updateProgress() {
@@ -161,24 +160,34 @@ initialTasks.forEach(function(task){  // ページを開いた際、localStorage
 
 
 // タスクを作成する関数
-function createTaskElement(taskText, taskList, category) {
+function createTaskElement(task, taskList, category) {
     const listItem = document.createElement("li"); // <li></li>を作成
     const checkbox = document.createElement("input"); // <input>を作成
     const deleteButton = document.createElement("button"); // <button></button>を作成
     const editButton = document.createElement("button"); // <button></button>を作成
-    const taskTextNode = document.createTextNode("" + taskText); // タスクのテキストを作成
+    const taskTextNode = document.createTextNode("" + task.title); // タスクのテキストを作成
+    const detailsButton = document.createElement("button"); // <button></button>を作成
+    const descriptionText = document.createElement("p"); // <p></p>を作成
+    descriptionText.textContent = task.description;
+    descriptionText.style.margin = "8px 0 0 28px";
+    descriptionText.style.fontSize = "14px";
+    descriptionText.style.color = "#555";
     
-
+    
     checkbox.type = "checkbox"; // <input type="checkbox">にする
     checkbox.className = "task"; // class="task"をつける
     deleteButton.textContent = "✖"; // ボタンのテキストを設定
     deleteButton.style.marginLeft = "10px"; // ボタンの左側に余白を追加
     editButton.textContent = "Edit"; // ボタンのテキストを設定
     editButton.style.marginLeft = "10px"; // ボタンの左側に余白を追加
+    detailsButton.textContent = "Details"; // ボタンのテキストを設定
+    detailsButton.style.marginLeft = "10px"; // ボタンの左側に余白を追加
 
     listItem.appendChild(checkbox); // <li>の中にチェックボックスを追加
     listItem.appendChild(taskTextNode); // <li>の中にタスクのテキストを追加
     listItem.appendChild(editButton); // <li>の中に編集ボタンを追加
+    listItem.appendChild(detailsButton); // <li>の中に詳細ボタンを追加
+    listItem.appendChild(descriptionText); // <li>の中に説明文を追加
     listItem.appendChild(deleteButton); // <li>の中に削除ボタンを追加
     
 
@@ -196,7 +205,7 @@ function createTaskElement(taskText, taskList, category) {
             const editInput = document.createElement("input"); // <input>を作成
 
             editInput.type = "text"; // <input type="text">にする
-            editInput.value = taskText; // <input>の値をタスクのテキストにする
+            editInput.value = task.title; // <input>の値をタスクのタイトルにする
 
             listItem.replaceChild(editInput, taskTextNode); // <li>の中のタスクのテキストを<input>に置き換える
 
@@ -210,10 +219,10 @@ function createTaskElement(taskText, taskList, category) {
                 return;
             }
 
-            const taskIndex = customTasks[category].indexOf(taskText); // 配列の中からタスクのインデックスを取得
+            const taskIndex = customTasks[category].indexOf(task); // 配列の中からタスクのインデックスを取
 
             if (taskIndex !== -1) {
-                customTasks[category][taskIndex] = newTaskText; // 配列の中のタスクを新しいテキストに置き換える
+                customTasks[category][taskIndex].title = newTaskText; // 配列の中のタスクを新しいテキストに置き換える
             }
 
             taskTextNode.textContent = " " + newTaskText; // タスクのテキストを更新
@@ -222,7 +231,7 @@ function createTaskElement(taskText, taskList, category) {
 
             localStorage.setItem("customTasks", JSON.stringify(customTasks)); // 配列をJSON文字列に変換してlocalStorageに保存
 
-            taskText = newTaskText; // タスクのテキストを更新
+            task.title = newTaskText; // タスクのテキストを更新
 
             editButton.textContent = "Edit"; // ボタンのテキストを変更
         }
@@ -232,8 +241,10 @@ function createTaskElement(taskText, taskList, category) {
     deleteButton.addEventListener("click", function() { // 削除ボタンがクリックされたら
         listItem.remove(); // <li>を削除する
 
+        const savedTask = task; // 削除するタスクを保存
+
         customTasks[category] = customTasks[category].filter(function(task) { // 配列から削除されたタスクを取り除く
-            return task !== taskText; // 削除されたタスク以外を残す
+            return savedTask !== task; // 削除されたタスク以外を残す
         });
         
         localStorage.setItem("customTasks", JSON.stringify(customTasks)); // 配列をJSON文字列に変換してlocalStorageに保存
@@ -242,6 +253,40 @@ function createTaskElement(taskText, taskList, category) {
         updateProgress(); // 削除後に進捗率を更新する
         }
     );
+
+    // 詳細ボタンがクリックされたら
+    detailsButton.addEventListener("click", function() {
+
+        if (detailsButton.textContent === "Details") { // 詳細ボタンのテキストが"Details"の場合
+
+            const descriptionInput = document.createElement("input"); // <input>を作成
+
+            descriptionInput.type = "text"; // <input type="text">にする
+            descriptionInput.value = task.description; // <input>の値をタスクの説明にする
+            descriptionInput.placeholder = "Enter task details"; // <input>のプレースホルダーを設定
+
+            listItem.replaceChild(descriptionInput, descriptionText); // <li>の中の説明文を<input>に置き換える
+
+            detailsButton.textContent = "Save Details"; // ボタンのテキストを変更
+
+        } else { // 詳細ボタンのテキストが"Save Details"の場合
+
+            const descriptionInput = listItem.querySelector('input[placeholder="Enter task details"]'); // <li>の中の<input>を取得
+
+            const newDescription = descriptionInput.value.trim(); // <input>の値を取得し、前後の空白を削除
+
+            task.description = newDescription; // タスクの説明を更新
+
+            descriptionText.textContent = newDescription; // 説明文を更新
+
+            listItem.replaceChild(descriptionText, descriptionInput); // <li>の中の<input>を説明文に置き換える
+
+            localStorage.setItem( "customTasks", JSON.stringify(customTasks) ); // 配列をJSON文字列に変換してlocalStorageに保存
+
+            detailsButton.textContent = "Details"; // ボタンのテキストを変更
+        }
+    });
+    
 }
 
 
@@ -257,7 +302,7 @@ function addTask() {
 
     createTaskElement(taskText, postArrivalList, "post"); // タスクを作成する関数を呼び出す
 
-    customTasks.post.push(taskText); // 配列に新しいタスクを追加
+    customTasks.post.push({ title: taskText, description: "" }); // 配列に新しいタスクを追加
 
     localStorage.setItem( // 配列をJSON文字列に変換してlocalStorageに保存
         "customTasks",
@@ -278,7 +323,7 @@ function addPreTask() {
 
     createTaskElement(taskText, preArrivalList, "pre");
    
-    customTasks.pre.push(taskText);
+    customTasks.pre.push({ title: taskText, description: "" }); // 配列に新しいタスクを追加
 
     localStorage.setItem(
         "customTasks",
