@@ -1,11 +1,17 @@
-body{   /* body = ページ全体に適応する設定 */
-    font-family: Arial, sans-serif; 
-    /* フォントのデザインを指定 */
-    /* まずArialフォントを使うが、なかった場合にsans-serif */
-    max-width: 600px;
-    /* 横幅を最大600ピクセルに */
-    margin: 40px auto;
-    /* 上下40ピクセルの余白、左右はautoによってブラウザで自動調整 */
+body {
+    font-family: Arial, sans-serif; /* フォントの種類を指定 */
+    margin: 0; /* 画面の余白を0にする */
+    padding: 40px 20px;    /* 上下40px, 左右20pxの余白 */
+    background-color: #f4f7fb; /* 背景色を薄い青色に設定 */
+}
+
+.app-container {
+    max-width: 700px; /* 画面の最大幅を700pxに設定 */
+    margin: 0 auto; /* 上下の余白は0、左右の余白は自動で中央寄せ */
+    background-color: white; /* 背景色を白に設定 */
+    padding: 32px; /* 内側の余白を32pxに設定 */
+    border-radius: 16px; /* 角を丸くする */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* 影をつける */
 }
 
 h1 {   /* h1に適応される設定 */
@@ -13,26 +19,48 @@ h1 {   /* h1に適応される設定 */
     /* 文字を中央寄せ */
 }
 
-li{  /* リスト部分の設定 */
-    margin: 15px 0;
-    /* 上下15px, 左右0の余白 */
-    font-size: 18px;
-    /* 文字サイズ18px */
+h2 {
+    text-align: left;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+
+li {
+    margin: 12px 0; /* 上下の余白を12pxに設定 */
+    padding: 12px 14px; /* 内側の余白を12px上下、14px左右に設定 */
+    font-size: 18px;   /* 文字サイズを18pxに設定 */
+    background-color: #f8fafc; /* 背景色を薄い灰色に設定 */
+    border-radius: 10px; /* 角を丸くする */
+    display: flex; /* 子要素を横並びにする */
+    align-items: center; /* 子要素を縦方向の中央に揃える */
+    gap: 10px; /* 子要素同士の間隔を10pxに設定 */
+}
+
+.task {
+    width: 18px; /* チェックボックスの幅を18pxに設定 */
+    height: 18px; /* チェックボックスの高さを18pxに設定 */
+    cursor: pointer; /* マウスアイコンがチェックボックス上で変化 */
+}
+
+ul {
+    list-style: none; /* リストのデフォルトのマーカーを消す */
+    padding: 0; /* ulに標準で設定されている左側の余白を消す */
 }
 
 .progress-container {
-    width: 100%; /*親要素であるbodyの幅の100% = 600px  */
-    height: 25px; 
-    background-color: #ddd; /* #ddd カラーコードで灰色系の色、カラーコードを使うと
-    色の名前を直接指定するよりも細かい調整ができる  */
-    border-radius: 10px; /*　角を丸くする  */
+    width: 100%; /* 親要素の幅いっぱいに広げる */
+    height: 18px; /* プログレスバーの高さを18pxに設定 */
+    background-color: #e5e7eb; /* 背景色を薄い灰色に設定 */
+    border-radius: 999px; /* 角を丸くする（999pxにすることで完全な円形になる） */
+    overflow: hidden; /* 子要素が親要素からはみ出さないようにする */
 }
 
 #progress-bar {
-    width: 0%;
-    height: 100%; /*親要素であるprogress-containerの高さの100%つまり25pxになる*/
-    background-color: green;
-    border-radius: 10px;
+    width: 0%; /* 初期状態ではプログレスバーの幅を0%に設定 */
+    height: 100%; /* 親要素の高さに合わせる */
+    background-color: #2563eb; /* プログレスバーの色を青に設定 */
+    border-radius: 999px; /* 角を丸くする（999pxにすることで完全な円形になる） */
+    transition: width 0.3s ease; /* プログレスバーの幅が変化する際のアニメーションを設定 */
 }
 
 .task-input-area {
@@ -41,32 +69,77 @@ li{  /* リスト部分の設定 */
     margin-bottom: 20px;  /* 下側の余白 */
 }
 
-#new-task-input {  
-/* id =  new-task-input の入力欄を装飾*/
-    flex: 1;    /* 残ったスペースを入力欄にすべて使う（例）画面1000px, ボタン150pxのとき、残りの850pxを対象(入力欄)に使う */
-    padding: 10px;   /* 内側(入力欄内)の余白　※marginは外側、paddingが内側 */
-    font-size: 16px;   /* 入力文字サイズ */
+#new-task-input {
+    flex: 1; /* input要素が残りのスペースを占めるようにする */
+    padding: 12px 14px; /* 内側の余白を12px上下、14px左右に設定 */
+    font-size: 16px; /* 文字サイズを16pxに設定 */
+    border: 1px solid #d1d5db; /* 枠線の色を薄い灰色に設定 */
+    border-radius: 8px; /* 角を丸くする */
+    outline: none; /* フォーカス時のアウトラインを消す */
+}
+
+#new-task-input:focus {
+    border-color: #2563eb;
+}
+
+#add-task-button,
+.task-filters button {
+    border: none; /* デフォルトの枠線を消す */
+    border-radius: 8px; /* 角を丸くする */
+    padding: 10px 16px; /* 上下10px、左右16pxの余白 */
+    font-size: 16px; /* 文字サイズ */
+    cursor: pointer; /* マウスアイコンがボタン上で変化 */
+    background-color: #e5e7eb; /* 背景色を薄い灰色に設定 */
 }
 
 #add-task-button {
-    /* ボタン専用の設定 */
-    padding: 10px 16px; /* ボタン内側余白　上下10px　左右16px */
-    font-size: 16px;
-    cursor: pointer;    /* マウスアイコンがボタン上で変化 */
+    background-color: #2563eb; /* 背景色を青に設定 */
+    color: white;
+}
+
+#add-task-button:hover,
+.task-filters button:hover {
+    background-color: #d1d5db; /* ホバー時の背景色を少し濃い灰色に設定 */
+}
+
+#add-task-button:hover {
+    background-color: #1d4ed8; /* ホバー時の背景色を少し濃い青色に設定 */
 }
 
 .task-filters {
-    display: flex;   /* 子要素（ここでは、inputとbutton）を横方向に並べる、これがないと縦並びで表示される */
-    gap: 10px;       /* 子要素同士の間隔 */
-    margin: 20px 0;  /* 上下の余白 */
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
 }
 
-.task-filters button {
-    padding: 8px 14px; /* ボタン内側余白　上下8px　左右14px */
-    cursor: pointer;    /* マウスアイコンがボタン上で変化 */
+.task-filters button.active-filter {
+    font-weight: bold;
+    background-color: #111827;
+    color: white;
 }
 
-.active-filter {
-    font-weight: bold; /* 太字にする */
-    border: 2px solid black; /* 下線を引く */
+@media (max-width: 600px) { /* 画面幅が600px以下の場合のスタイル */
+    body {
+        padding: 20px 12px;
+    }
+
+    .app-container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .task-input-area {
+        flex-direction: column;
+    }
+
+    #add-task-button {
+        width: 100%;
+    }
+
+    .task-filters {
+        flex-wrap: wrap;
+    }
 }
