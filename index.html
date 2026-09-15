@@ -32,7 +32,12 @@
 
                 <h2>Pre-arrival Tasks</h2>  <!-- 中見出し -->
                 
-                <ul> <!-- リスト開始(箇条書き) -->
+                <div class="task-input-area"> <!-- divで箱を設置 -->
+                    <input type="text" id="new-pre-task-input" placeholder="Enter a new pre-arrival task">  <!-- タスクの入力欄 -->
+                    <button id="add-pre-task-button">Add Task</button> <!-- Add Task ボタン -->
+                </div>
+
+                <ul id="pre-arrival-list"> <!-- リスト(箇条書き)の開始 -->
                     <li> <!-- リストの項目 -->
                         <input type="checkbox" class="task"> <!-- チェックボックスの出力 -->
                         Apply for Visa <!-- そのまま表示 -->

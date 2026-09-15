@@ -7,12 +7,17 @@ const progressText = document.getElementById("progress-text");
 const progressBar = document.getElementById("progress-bar"); 
 // <div id="progress-bar"></div>を取得
 
+const newPreTaskInput = document.getElementById("new-pre-task-input");
+// HTMLから入力欄<input id="new-pre-task-input">を取得
+const addPreTaskButton = document.getElementById("add-pre-task-button");
+// ボタン<button id="add-pre-task-button"></button>を取得
+const preArrivalList = document.getElementById("pre-arrival-list");
+// <ul id="pre-arrival-list">を取得
+
 const newTaskInput = document.getElementById("new-task-input"); 
 // HTMLから入力欄<input id="new-task-input">を取得
-
 const addTaskButton = document.getElementById("add-task-button"); 
 // ボタン<button id="add-task-button"></button>を取得
-
 const postArrivalList = document.getElementById("post-arrival-list"); 
 // <ul id="post-arrival-list">を取得
 
@@ -40,15 +45,21 @@ if (savedTaskStates !== null) { // localStorageに保存されたタスクの状
 } 
 
 
-let customTasks = []; // 追加されたタスクを保存する配列を作成
+let customTasks = { pre: [], post: [] }; // タスクを保存する配列を作成
 
 if (savedTasks !== null) { // localStorageに保存されたタスクがある場合
     customTasks = JSON.parse(savedTasks); // JSON文字列を配列に変換してcustomTasksに保存
 }
 
-customTasks.forEach(function(taskText) { // 保存されたタスクを1つずつ取り出す
-    createTaskElement(taskText); // タスクを作成する関数を呼び出す
-}); 
+// ページを開いた際、localStorageに保存されたタスクを表示する
+customTasks.pre.forEach(function(taskText) {
+    createTaskElement(taskText, preArrivalList, "pre");
+});
+
+// ページを開いた際、localStorageに保存されたタスクを表示する
+customTasks.post.forEach(function(taskText) {
+    createTaskElement(taskText, postArrivalList, "post");
+});
 
 function updateProgress() {
     const tasks = document.querySelectorAll(".task");
@@ -149,8 +160,8 @@ initialTasks.forEach(function(task){  // ページを開いた際、localStorage
 });
 
 
-// ページを開いた際、localStorageに保存されたタスクを表示する
-function createTaskElement(taskText) {
+// タスクを作成する関数
+function createTaskElement(taskText, taskList, category) {
     const listItem = document.createElement("li"); // <li></li>を作成
     const checkbox = document.createElement("input"); // <input>を作成
     const deleteButton = document.createElement("button"); // <button></button>を作成
@@ -171,7 +182,7 @@ function createTaskElement(taskText) {
     listItem.appendChild(deleteButton); // <li>の中に削除ボタンを追加
     
 
-    postArrivalList.appendChild(listItem); // <ul>の中に<li>を追加
+    taskList.appendChild(listItem); // <ul>の中に<li>を追加
 
     checkbox.addEventListener("change", function() {  // チェックボックスが変わったら、updateProgress()を実行する
         updateProgress(); // チェックボックスの状態が変わったら進捗率を更新する
@@ -199,10 +210,10 @@ function createTaskElement(taskText) {
                 return;
             }
 
-            const taskIndex = customTasks.indexOf(taskText); // 配列の中のタスクのインデックスを取得
+            const taskIndex = customTasks[category].indexOf(taskText); // 配列の中からタスクのインデックスを取得
 
-            if (taskIndex !== -1) { // 配列の中にタスクが存在する場合
-                customTasks[taskIndex] = newTaskText; // 配列の中のタスクを新しいタスクに置き換える    
+            if (taskIndex !== -1) {
+                customTasks[category][taskIndex] = newTaskText; // 配列の中のタスクを新しいテキストに置き換える
             }
 
             taskTextNode.textContent = " " + newTaskText; // タスクのテキストを更新
@@ -221,7 +232,7 @@ function createTaskElement(taskText) {
     deleteButton.addEventListener("click", function() { // 削除ボタンがクリックされたら
         listItem.remove(); // <li>を削除する
 
-        customTasks = customTasks.filter(function(task) { // 配列から削除されたタスクを取り除く
+        customTasks[category] = customTasks[category].filter(function(task) { // 配列から削除されたタスクを取り除く
             return task !== taskText; // 削除されたタスク以外を残す
         });
         
@@ -233,6 +244,8 @@ function createTaskElement(taskText) {
     );
 }
 
+
+
 // 新しいタスクを追加する関数
 function addTask() { 
     const taskText =
@@ -242,9 +255,9 @@ function addTask() {
         return;
     }
 
-    createTaskElement(taskText); // 新しいタスクを作成する関数を呼び出す
+    createTaskElement(taskText, postArrivalList, "post"); // タスクを作成する関数を呼び出す
 
-    customTasks.push(taskText); // 配列に新しいタスクを追加
+    customTasks.post.push(taskText); // 配列に新しいタスクを追加
 
     localStorage.setItem( // 配列をJSON文字列に変換してlocalStorageに保存
         "customTasks",
@@ -256,8 +269,29 @@ function addTask() {
     newTaskInput.focus(); // 入力欄にフォーカスを戻す
 }
  
+function addPreTask() {
+    const taskText = newPreTaskInput.value.trim();
+
+    if (taskText === "") {
+        return;
+    }
+
+    createTaskElement(taskText, preArrivalList, "pre");
+   
+    customTasks.pre.push(taskText);
+
+    localStorage.setItem(
+        "customTasks",
+        JSON.stringify(customTasks)
+    );
+
+    newPreTaskInput.value = "";
+    newPreTaskInput.focus();
+}
 
 addTaskButton.addEventListener("click", addTask); //Add TaskボタンがクリックされたらaddTask関数を実行
+
+addPreTaskButton.addEventListener("click", addPreTask); //Add Pre-arrival TaskボタンがクリックされたらaddPreTask関数を実行
 
 // Enterキーが押されたらaddTask関数を実行
 newTaskInput.addEventListener("keydown", function(event) {  
@@ -265,6 +299,13 @@ newTaskInput.addEventListener("keydown", function(event) {
         addTask(); // Enterキーが押されたらaddTask関数を実行
     }
 
+});
+
+// Enterキーが押されたらaddPreTask関数を実行
+newPreTaskInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        addPreTask();
+    }
 });
 
 // フィルターボタンのクリックイベントリスナーを追加
