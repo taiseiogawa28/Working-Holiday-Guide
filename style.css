@@ -32,6 +32,8 @@ li {
     background-color: #f8fafc; /* 背景色を薄い灰色に設定 */
     border-radius: 10px; /* 角を丸くする */
     display: flex; /* 子要素を横並びにする */
+    flex-wrap: wrap; /* 狭い画面ではボタンを折り返す */
+    overflow-wrap: anywhere; /* 長い英単語も枠内で折り返す */
     align-items: center; /* 子要素を縦方向の中央に揃える */
     gap: 10px; /* 子要素同士の間隔を10pxに設定 */
 }
@@ -40,6 +42,7 @@ li {
     width: 18px; /* チェックボックスの幅を18pxに設定 */
     height: 18px; /* チェックボックスの高さを18pxに設定 */
     cursor: pointer; /* マウスアイコンがチェックボックス上で変化 */
+    flex-shrink: 0; /* 狭い画面でもチェックボックスの幅を保つ */
 }
 
 ul {
@@ -69,8 +72,10 @@ ul {
     margin-bottom: 20px;  /* 下側の余白 */
 }
 
-#new-task-input {
+#new-pre-task-input,
+#new-post-task-input {
     flex: 1; /* input要素が残りのスペースを占めるようにする */
+    min-width: 0; /* 狭い画面で入力欄がはみ出さないようにする */
     padding: 12px 14px; /* 内側の余白を12px上下、14px左右に設定 */
     font-size: 16px; /* 文字サイズを16pxに設定 */
     border: 1px solid #d1d5db; /* 枠線の色を薄い灰色に設定 */
@@ -78,11 +83,13 @@ ul {
     outline: none; /* フォーカス時のアウトラインを消す */
 }
 
-#new-task-input:focus {
+#new-pre-task-input:focus,
+#new-post-task-input:focus {
     border-color: #2563eb;
 }
 
-#add-task-button,
+#add-pre-task-button,
+#add-post-task-button,
 .task-filters button {
     border: none; /* デフォルトの枠線を消す */
     border-radius: 8px; /* 角を丸くする */
@@ -92,17 +99,18 @@ ul {
     background-color: #e5e7eb; /* 背景色を薄い灰色に設定 */
 }
 
-#add-task-button {
+#add-pre-task-button,
+#add-post-task-button {
     background-color: #2563eb; /* 背景色を青に設定 */
     color: white;
 }
 
-#add-task-button:hover,
 .task-filters button:hover {
     background-color: #d1d5db; /* ホバー時の背景色を少し濃い灰色に設定 */
 }
 
-#add-task-button:hover {
+#add-pre-task-button:hover,
+#add-post-task-button:hover {
     background-color: #1d4ed8; /* ホバー時の背景色を少し濃い青色に設定 */
 }
 
@@ -116,6 +124,16 @@ ul {
     font-weight: bold;
     background-color: #111827;
     color: white;
+}
+
+.task-details {
+    flex-basis: 100%; /* 詳細エリアはタスクの下に1行分の幅で表示する */
+    min-width: 0;
+}
+
+li input[type="text"] {
+    max-width: 100%; /* タイトル・説明文の編集欄をタスクの幅以内に収める */
+    box-sizing: border-box; /* 枠線と余白も幅に含める */
 }
 
 @media (max-width: 600px) { /* 画面幅が600px以下の場合のスタイル */
@@ -135,7 +153,8 @@ ul {
         flex-direction: column;
     }
 
-    #add-task-button {
+    #add-pre-task-button,
+    #add-post-task-button {
         width: 100%;
     }
 
