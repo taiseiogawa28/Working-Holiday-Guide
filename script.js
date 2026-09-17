@@ -45,7 +45,8 @@ if (savedTaskStates !== null) { // localStorageに保存されたタスクの状
 const defaultPreTasks = [
     {
         title: "Apply for Visa",
-        description: "Check visa requirements and prepare the necessary documents."
+        description: "Check visa requirements and prepare the necessary documents.",
+        type: "visa"
     },
     {
         title: "Buy Flight Ticket",
@@ -203,17 +204,30 @@ function createTaskElement(task, taskList, category, isDefault = false) {
     const detailsButton = document.createElement("button"); // <button></button>を作成
     const descriptionText = document.createElement("p"); // <p></p>を作成
     const detailsArea = document.createElement("div"); // <div></div>を作成
+    const descriptionSection = document.createElement("div"); // 説明文をまとめる小さなセクションを作成
+    const descriptionHeading = document.createElement("h3"); // Descriptionの見出しを作成
+    const descriptionContent = document.createElement("div"); // 説明文と入力欄を入れる箱を作成
     const editDetailsButton = document.createElement("button"); // <button></button>を作成
+    const countrySelect = document.createElement("select"); // <select></select>を作成
+    const officialSiteButton = document.createElement("button"); // <button></button>を作成
+    const visaSection = document.createElement("div"); // Visa Informationをまとめる小さなセクションを作成
+    const visaHeading = document.createElement("h3"); // Visa Informationの見出しを作成
+    const visaControls = document.createElement("div"); // 国選択と公式サイトボタンを横並びにする箱を作成
+    const visaUrls = {
+        "New Zealand": "https://www.immigration.govt.nz/visas/japan-working-holiday-visa/",
+        "Australia": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417"
+    };
 
     editDetailsButton.textContent = "Edit Details"; // ボタンのテキストを設定
+    descriptionHeading.textContent = "Description"; // 説明文セクションの見出しを設定
 
     // 説明文を設定
     descriptionText.textContent = task.description; // 説明文のテキストを設定
-    descriptionText.style.margin = "8px 0 0 28px"; // 説明文の上に余白を追加
-    descriptionText.style.fontSize = "14px"; // 説明文のフォントサイズを小さくする
-    descriptionText.style.color = "#555";   // 説明文の文字色を薄くする
     // 説明文自身は隠さず、detailsArea全体で表示・非表示を管理する
     detailsArea.className = "task-details"; // 詳細エリアの見た目はCSSで設定
+    descriptionSection.className = "detail-section description-section"; // Description専用の小さなセクションにする
+    descriptionHeading.className = "detail-heading"; // 詳細セクション共通の見出しスタイルを設定
+    descriptionContent.className = "description-content"; // 説明文の表示・編集領域にクラスを設定
     
     // タスクの要素を作成
     checkbox.type = "checkbox"; // <input type="checkbox">にする
@@ -238,9 +252,53 @@ function createTaskElement(task, taskList, category, isDefault = false) {
         listItem.appendChild(deleteButton);
     }
 
-    // 詳細エリアの要素を作成
-    detailsArea.appendChild(descriptionText); // <div>の中に説明文を追加
-    detailsArea.appendChild(editDetailsButton); // <div>の中にEdit Detailsボタンを追加
+    // Descriptionセクションの要素を作成
+    descriptionContent.appendChild(descriptionText); // 説明文の表示領域に<p>を追加
+    descriptionSection.appendChild(descriptionHeading); // Descriptionの見出しを追加
+    descriptionSection.appendChild(descriptionContent); // Descriptionの内容を追加
+    descriptionSection.appendChild(editDetailsButton); // Descriptionの編集ボタンを追加
+    detailsArea.appendChild(descriptionSection); // 詳細エリアにDescriptionセクションを追加
+
+    // ビザ申請タスクの場合、Visa Informationセクションを追加
+    if (task.type === "visa") {
+        const countries = [
+            "New Zealand",
+            "Australia"
+        ];
+
+        countries.forEach(function(country) {
+            const option = document.createElement("option");
+            option.value = country;
+            option.textContent = country;
+            countrySelect.appendChild(option);
+        });
+
+        officialSiteButton.textContent = "Open Official Visa Site";
+        const countryLabel = document.createElement("label"); // Countryのラベルを作成
+        countryLabel.textContent = "Country"; // ラベルのテキストを設定
+        countryLabel.htmlFor = "visa-country-select"; // ラベルと国選択を関連づける
+        countrySelect.id = "visa-country-select"; // 国選択にidを設定
+
+        visaSection.className = "detail-section visa-section"; // Visa Information専用の小さなセクションにする
+        visaHeading.className = "detail-heading"; // 詳細セクション共通の見出しスタイルを設定
+        visaHeading.textContent = "Visa Information"; // ビザ情報セクションの見出しを設定
+        visaControls.className = "visa-controls"; // 国選択と公式サイトボタンをまとめる
+
+        visaControls.appendChild(countrySelect); // 横並びの箱に<select>を追加
+        visaControls.appendChild(officialSiteButton); // 横並びの箱に公式サイトボタンを追加
+        visaSection.appendChild(visaHeading); // Visa Informationの見出しを追加
+        visaSection.appendChild(countryLabel); // Countryのラベルを追加
+        visaSection.appendChild(visaControls); // 国選択と公式サイトボタンを追加
+        detailsArea.appendChild(visaSection); // 詳細エリアにVisa Informationセクションを追加
+
+        // 公式サイトボタンがクリックされたときに、選択された国のビザ申請ページを新しいタブで開く
+        officialSiteButton.addEventListener("click", function() {
+            const selectedCountry = countrySelect.value; // 選択された国を取得
+            const url = visaUrls[selectedCountry]; // 選択された国のURLを取得
+
+            window.open(url, "_blank"); // 新しいタブでURLを開く
+        });
+    }
 
     listItem.appendChild(detailsArea); // <li>の中に<div>を追加
 
@@ -248,6 +306,7 @@ function createTaskElement(task, taskList, category, isDefault = false) {
 
     taskList.appendChild(listItem); // <ul>の中に<li>を追加
 
+    // チェックボックスの状態が変わったときに、進捗率を更新し、タスクの状態を保存する
     checkbox.addEventListener("change", function() {  // チェックボックスが変わったら、updateProgress()を実行する
         updateProgress(); // チェックボックスの状態が変わったら進捗率を更新する
         saveTaskStates();  // チェックボックスの状態を保存する  
@@ -325,13 +384,13 @@ function createTaskElement(task, taskList, category, isDefault = false) {
             descriptionInput.value = task.description; // <input>の値をタスクの説明文にする
             descriptionInput.placeholder = "Enter task details"; // <input>のプレースホルダーを設定
 
-            detailsArea.replaceChild(descriptionInput, descriptionText); // <div>の中の説明文を<input>に置き換える
+            descriptionContent.replaceChild(descriptionInput, descriptionText); // Description内の説明文を<input>に置き換える
 
             editDetailsButton.textContent = "Save"; // ボタンのテキストを変更
 
         } else { // Edit Detailsボタンのテキストが"Save"の場合は、入力欄の値を保存する
 
-            const descriptionInput = detailsArea.querySelector('input[placeholder="Enter task details"]'); // <div>の中の<input>を取得
+            const descriptionInput = descriptionContent.querySelector('input[placeholder="Enter task details"]'); // Description内の<input>を取得
 
             const newDescription = descriptionInput.value.trim(); // <input>の値を取得し、前後の空白を削除
 
@@ -339,7 +398,7 @@ function createTaskElement(task, taskList, category, isDefault = false) {
 
             descriptionText.textContent = newDescription; // 説明文のテキストを更新
 
-            detailsArea.replaceChild(descriptionText, descriptionInput);  // <div>の中の<input>を説明文に置き換える
+            descriptionContent.replaceChild(descriptionText, descriptionInput);  // Description内の<input>を説明文に置き換える
 
             // カスタムタスクは更新済みのオブジェクトをlocalStorageにも保存
             if (!isDefault) {
@@ -453,4 +512,3 @@ filterCompletedButton.addEventListener("click", function() {
     
 updateFilterButtons(); 
 // フィルターボタンの状態を更新することで,ページを開いた際に選択中のフィルターボタンを強調表示する
-

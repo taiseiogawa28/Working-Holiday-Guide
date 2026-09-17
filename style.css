@@ -128,12 +128,96 @@ ul {
 
 .task-details {
     flex-basis: 100%; /* 詳細エリアはタスクの下に1行分の幅で表示する */
-    min-width: 0;
+    min-width: 0; /* 狭い画面で詳細エリアがはみ出さないようにする */
+    display: grid;
+    gap: 12px; /* DescriptionとVisa Informationの間隔を設定 */
+    padding-top: 4px;
+}
+
+.detail-section {
+    padding: 12px; /* 小さなセクションの内側に余白をつける */
+    background-color: #ffffff; /* タスクカードより少し明るい背景色にする */
+    border: 1px solid #e2e8f0; /* 薄い枠線で内容を区切る */
+    border-radius: 8px; /* タスクカードに合わせて角を丸くする */
+}
+
+.detail-heading {
+    margin: 0 0 10px;
+    font-size: 15px;
+    color: #1f2937;
+}
+
+.description-content p {
+    margin: 0 0 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+}
+
+.description-content input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.description-section button,
+.visa-section button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.description-section button {
+    background-color: #e5e7eb;
+    color: #111827;
+}
+
+.description-section button:hover {
+    background-color: #d1d5db;
 }
 
 li input[type="text"] {
     max-width: 100%; /* タイトル・説明文の編集欄をタスクの幅以内に収める */
     box-sizing: border-box; /* 枠線と余白も幅に含める */
+}
+
+.visa-section label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #374151;
+}
+
+.visa-controls {
+    display: flex; /* デスクトップでは国選択と公式サイトボタンを横並びにする */
+    flex-wrap: wrap; /* 幅が足りない場合は自然に折り返す */
+    gap: 8px;
+    align-items: stretch;
+}
+
+.visa-controls select {
+    flex: 1 1 160px;
+    min-width: 0;
+    padding: 8px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: white;
+}
+
+.visa-controls button {
+    flex: 0 1 auto;
+    background-color: #2563eb;
+    color: white;
+}
+
+.visa-controls button:hover {
+    background-color: #1d4ed8;
 }
 
 @media (max-width: 600px) { /* 画面幅が600px以下の場合のスタイル */
@@ -160,5 +244,9 @@ li input[type="text"] {
 
     .task-filters {
         flex-wrap: wrap;
+    }
+
+    .visa-controls button {
+        flex-grow: 1; /* 狭い画面で折り返した場合はボタンを見やすい幅に広げる */
     }
 }
