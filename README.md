@@ -4,7 +4,7 @@ A web application that helps working holiday travelers manage their preparation 
 
 ## Description
 Working Holiday Guide is a web application that helps people prepare for and manage their working holiday journey.
-Users can organise pre-arrival and post-arrival tasks, view and edit task details, access official visa information, and track their progress with a progress bar.
+Users can organise pre-arrival and post-arrival tasks, view and edit task details, access country-specific information, and track their progress with a progress bar.
 
 ## Features
 
@@ -14,8 +14,9 @@ Users can organise pre-arrival and post-arrival tasks, view and edit task detail
 - Add custom tasks, edit their titles and delete them in either checklist
 - Show and hide descriptions with Details / Hide Details
 - Edit descriptions with Edit Details and Save for both default and custom tasks
-- Organised Description and Visa Information sections in the Apply for Visa task
-- Country selection for New Zealand and Australia with links to their official visa websites
+- Organised Description, Visa Information, Tax Information, and Bank Information sections
+- Country selection for New Zealand and Australia with links to official visa and tax websites
+- Recommended bank lists for each country with links to the banks' official websites
 - Save custom task titles, descriptions and all checkbox states using localStorage, and restore them after reloading
 - Add tasks with the Add Task button or Enter key
 - Filter tasks by All, Active, and Completed
@@ -46,6 +47,8 @@ Through this project, I learned:
 - JavaScript array methods
 - Managing tasks as objects with titles and descriptions
 - Creating task-specific UI using an object type property
+- Dynamically updating buttons based on a selected country
+- Sharing styles across Visa, Tax, and Bank information sections
 - Reusing a shared function to create pre-arrival and post-arrival task elements
 - Responsive layouts with CSS media queries
 - Git & GitHub workflow

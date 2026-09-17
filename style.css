@@ -164,7 +164,7 @@ ul {
 }
 
 .description-section button,
-.visa-section button {
+.information-section button {
     padding: 8px 12px;
     border: none;
     border-radius: 8px;
@@ -185,7 +185,8 @@ li input[type="text"] {
     box-sizing: border-box; /* 枠線と余白も幅に含める */
 }
 
-.visa-section label {
+.information-section label,
+.information-label {
     display: block;
     margin-bottom: 6px;
     font-size: 14px;
@@ -193,31 +194,53 @@ li input[type="text"] {
     color: #374151;
 }
 
-.visa-controls {
+.information-label {
+    margin-top: 16px; /* Country選択と次の情報グループの間に余白をつける */
+}
+
+.information-section select {
+    max-width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    background-color: white;
+}
+
+.information-controls {
     display: flex; /* デスクトップでは国選択と公式サイトボタンを横並びにする */
     flex-wrap: wrap; /* 幅が足りない場合は自然に折り返す */
     gap: 8px;
     align-items: stretch;
 }
 
-.visa-controls select {
+.information-controls select {
     flex: 1 1 160px;
     min-width: 0;
-    padding: 8px 10px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 14px;
-    background-color: white;
 }
 
-.visa-controls button {
-    flex: 0 1 auto;
+.information-section button {
     background-color: #2563eb;
     color: white;
 }
 
-.visa-controls button:hover {
+.information-controls button {
+    flex: 0 1 auto;
+}
+
+.information-section button:hover {
     background-color: #1d4ed8;
+}
+
+.bank-section > select {
+    width: 240px; /* Country選択は読みやすい幅にし、狭い画面では親要素に収める */
+}
+
+.bank-buttons {
+    display: flex; /* デスクトップでは銀行ボタンを横並びにする */
+    flex-wrap: wrap; /* 狭い画面では自然に折り返す */
+    gap: 8px;
 }
 
 @media (max-width: 600px) { /* 画面幅が600px以下の場合のスタイル */
@@ -246,7 +269,11 @@ li input[type="text"] {
         flex-wrap: wrap;
     }
 
-    .visa-controls button {
+    .information-controls button {
         flex-grow: 1; /* 狭い画面で折り返した場合はボタンを見やすい幅に広げる */
+    }
+
+    .bank-buttons button {
+        flex: 1 1 auto; /* スマホでは銀行ボタンを折り返しながら見やすい幅にする */
     }
 }

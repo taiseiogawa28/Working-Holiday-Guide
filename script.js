@@ -66,11 +66,13 @@ const defaultPreTasks = [
 const defaultPostTasks = [
     {
         title: "Open Bank Account",
-        description: "Choose a local bank and prepare the required identification documents."
+        description: "Choose a local bank and prepare the required identification documents.",
+        type: "bank"
     },
     {
         title: "Apply for Tax Number",
-        description: "Apply for the tax identification number required for working in your destination country."
+        description: "Apply for the tax identification number required for working in your destination country.",
+        type: "tax"
     },
     {
         title: "Buy SIM Card",
@@ -210,12 +212,43 @@ function createTaskElement(task, taskList, category, isDefault = false) {
     const editDetailsButton = document.createElement("button"); // <button></button>を作成
     const countrySelect = document.createElement("select"); // <select></select>を作成
     const officialSiteButton = document.createElement("button"); // <button></button>を作成
+
+    // ビザ申請タスクの場合、Visa Informationセクションを準備
     const visaSection = document.createElement("div"); // Visa Informationをまとめる小さなセクションを作成
     const visaHeading = document.createElement("h3"); // Visa Informationの見出しを作成
     const visaControls = document.createElement("div"); // 国選択と公式サイトボタンを横並びにする箱を作成
-    const visaUrls = {
+    const visaUrls = { // 国ごとの公式サイトのURLを定義
         "New Zealand": "https://www.immigration.govt.nz/visas/japan-working-holiday-visa/",
         "Australia": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417"
+    };
+
+    // 税金申請タスクの場合、Tax Informationセクションを準備
+    const taxSection = document.createElement("div"); // Tax Informationをまとめる小さなセクションを作成
+    const taxHeading = document.createElement("h3"); // Tax Informationの見出しを作成
+    const taxControls = document.createElement("div"); // 国選択と公式サイトボタンを横並びにする箱を作成
+    const taxCountrySelect = document.createElement("select"); // <select></select>を作成
+    const taxOfficialSiteButton = document.createElement("button"); // <button></button>を作成
+    const taxUrls = { // 国ごとの公式サイトのURLを定義
+        "New Zealand": "https://www.ird.govt.nz/new-arrival",
+        "Australia": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn/foreign-passport-holders-permanent-migrants-and-temporary-visitors-tfn-application"
+    };
+
+    // 銀行口座開設タスクの場合、Bank Informationセクションを準備
+    const bankSection = document.createElement("div"); // Bank Informationをまとめる小さなセクションを作成
+    const bankHeading = document.createElement("h3"); // Bank Informationの見出しを作成
+    const bankCountrySelect = document.createElement("select"); // <select></select>を作成
+    const bankButtonsArea = document.createElement("div"); // 銀行ボタンをまとめる箱を作成
+    const bankUrls = {
+        "New Zealand": {
+            "ANZ": "https://www.anz.co.nz/personal/accounts/",
+            "ASB": "https://www.asb.co.nz/bank-accounts",
+            "BNZ": "https://www.bnz.co.nz/"
+        },
+        "Australia": {
+            "ANZ": "https://www.anz.com.au/personal/bank-accounts/",
+            "Commonwealth Bank": "https://www.commbank.com.au/banking.html",
+            "NAB": "https://www.nab.com.au/personal/accounts"
+        }
     };
 
     editDetailsButton.textContent = "Edit Details"; // ボタンのテキストを設定
@@ -279,10 +312,10 @@ function createTaskElement(task, taskList, category, isDefault = false) {
         countryLabel.htmlFor = "visa-country-select"; // ラベルと国選択を関連づける
         countrySelect.id = "visa-country-select"; // 国選択にidを設定
 
-        visaSection.className = "detail-section visa-section"; // Visa Information専用の小さなセクションにする
+        visaSection.className = "detail-section information-section visa-section"; // Information共通デザインを持つVisaセクションにする
         visaHeading.className = "detail-heading"; // 詳細セクション共通の見出しスタイルを設定
         visaHeading.textContent = "Visa Information"; // ビザ情報セクションの見出しを設定
-        visaControls.className = "visa-controls"; // 国選択と公式サイトボタンをまとめる
+        visaControls.className = "information-controls visa-controls"; // 国選択と公式サイトボタンを横並びにする
 
         visaControls.appendChild(countrySelect); // 横並びの箱に<select>を追加
         visaControls.appendChild(officialSiteButton); // 横並びの箱に公式サイトボタンを追加
@@ -298,6 +331,123 @@ function createTaskElement(task, taskList, category, isDefault = false) {
 
             window.open(url, "_blank"); // 新しいタブでURLを開く
         });
+    }
+
+    // 税金申請タスクの場合、Tax Informationセクションを追加
+    if (task.type === "tax") {
+        const countries = [
+            "New Zealand",
+            "Australia"
+        ];
+
+        countries.forEach(function(country) {
+            const option = document.createElement("option"); // <option>を作成
+            option.value = country; // <option>のvalue属性を設定
+            option.textContent = country; // <option>の表示テキストを設定
+            taxCountrySelect.appendChild(option); // <select>に<option>を追加
+        });
+
+        taxOfficialSiteButton.textContent = "Open Official Tax Site"; // ボタンのテキストを設定
+
+        const countryLabel = document.createElement("label"); // Countryのラベルを作成
+        countryLabel.textContent = "Country"; // ラベルのテキストを設定
+
+        taxCountrySelect.id = "tax-country-select"; // 国選択にidを設定
+        countryLabel.htmlFor = "tax-country-select"; // ラベルと国選択を関連づける
+
+        taxSection.className = "detail-section information-section tax-section"; // Information共通デザインを持つTaxセクションにする
+        taxHeading.className = "detail-heading"; // 詳細セクション共通の見出しスタイルを設定
+        taxHeading.textContent = "Tax Information"; // 税金情報セクションの見出しを設定
+        taxControls.className = "information-controls tax-controls"; // 国選択と公式サイトボタンを横並びにする
+
+        taxControls.appendChild(taxCountrySelect); // 横並びの箱に<select>を追加
+        taxControls.appendChild(taxOfficialSiteButton); // 横並びの箱に公式サイトボタンを追加
+
+        taxSection.appendChild(taxHeading); // Tax Informationの見出しを追加
+        taxSection.appendChild(countryLabel);  // Countryのラベルを追加
+        taxSection.appendChild(taxControls); // 国選択と公式サイトボタンを追加
+
+        detailsArea.appendChild(taxSection); // 詳細エリアにTax Informationセクションを追加
+
+        // 公式サイトボタンがクリックされたときに、選択された国の税金申請ページを新しいタブで開く
+        taxOfficialSiteButton.addEventListener("click", function() {
+            const selectedCountry = taxCountrySelect.value; // 選択された国を取得
+            const url = taxUrls[selectedCountry]; // 選択された国のURLを取得
+
+            window.open(url, "_blank"); // 新しいタブでURLを開く
+        });
+    }
+
+    // 銀行口座開設タスクの場合、Bank Informationセクションを追加
+    if (task.type === "bank") {
+
+        const countries = [
+            "New Zealand",
+            "Australia"
+        ];
+
+        countries.forEach(function(country) {
+            const option = document.createElement("option");
+
+            option.value = country;
+            option.textContent = country;
+
+            bankCountrySelect.appendChild(option);
+        });
+
+        const countryLabel = document.createElement("label");
+        countryLabel.textContent = "Country";
+        const recommendedBanksLabel = document.createElement("p"); // 銀行一覧のラベルを作成
+        recommendedBanksLabel.textContent = "Recommended Banks"; // ラベルのテキストを設定
+        recommendedBanksLabel.className = "information-label"; // Information共通のラベルスタイルを設定
+
+        bankCountrySelect.id = "bank-country-select";
+        countryLabel.htmlFor = "bank-country-select";
+
+        bankSection.className = "detail-section information-section bank-section";
+
+        bankHeading.className = "detail-heading";
+        bankHeading.textContent = "Bank Information";
+
+        bankButtonsArea.className = "bank-buttons";
+
+        bankSection.appendChild(bankHeading);
+        bankSection.appendChild(countryLabel);
+        bankSection.appendChild(bankCountrySelect);
+        bankSection.appendChild(recommendedBanksLabel);
+        bankSection.appendChild(bankButtonsArea);
+
+        detailsArea.appendChild(bankSection);
+
+        // 国選択が変更されたときに、銀行ボタンを更新する
+        function updateBankButtons() {
+
+            bankButtonsArea.innerHTML = "";
+
+            const selectedCountry = bankCountrySelect.value;
+
+            const banks = bankUrls[selectedCountry];
+
+            Object.keys(banks).forEach(function(bankName) {
+
+                const bankButton = document.createElement("button");
+
+                bankButton.textContent = bankName;
+
+                bankButton.addEventListener("click", function() {
+                    window.open(banks[bankName], "_blank");
+                });
+
+                bankButtonsArea.appendChild(bankButton);
+            });
+        }
+        // 国選択が変更されたときに、銀行ボタンを更新する
+        bankCountrySelect.addEventListener("change", function() {
+            updateBankButtons();
+        });
+
+        // 初期表示時に銀行ボタンを更新する
+        updateBankButtons();
     }
 
     listItem.appendChild(detailsArea); // <li>の中に<div>を追加
