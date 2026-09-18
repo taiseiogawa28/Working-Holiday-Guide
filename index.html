@@ -14,14 +14,24 @@
         <body> 
         <!-- 出力画面部分の開始 -->
             <div class="app-container">  <!--  画面全体を囲む箱を設置 -->
+                <div class="language-switcher">
+                    <button id="language-toggle-button" aria-label="Switch display language to Japanese">日本語</button>
+                </div>
+
                 <h1>🌎Working Holiday Guide<br> 
-                    - For Japanese -
+                    <span id="app-subtitle">- For Japanese -</span>
                 </h1>  <!-- hは見出しheading -->
 
-                <p id="progress-text">Progress: 0%</p> <!-- Progress : 0%を表示、id="progress-text"は、このpタグへの名づけで、理由はJavaScriptから探すため-->
-                
-                <div class="progress-container">   <!--　divで箱を設置　-->
-                    <div id="progress-bar"></div>  <!-- さらに内側に箱、これを進捗バーとして利用する -->
+            <!-- 進捗状況の表示部分を囲む箱を設置 -->
+                <div class="progress-section">
+                    <div class="progress-info">
+                        <p id="progress-text">Progress: 0%</p>
+                        <p id="remaining-tasks">Remaining: 0</p>
+                    </div>
+
+                    <div class="progress-container">
+                        <div id="progress-bar"></div>
+                    </div>
                 </div>
 
                 <div class="task-filters">
@@ -30,7 +40,7 @@
                     <button id="filter-completed">Completed</button>
                 </div>
 
-                <h2>Pre-arrival Tasks</h2>  <!-- 中見出し -->
+                <h2 id="pre-arrival-heading">Pre-arrival Tasks</h2>  <!-- 中見出し -->
                 
                 <div class="task-input-area"> <!-- divで箱を設置 -->
                     <input type="text" id="new-pre-task-input" placeholder="Enter a new pre-arrival task">  <!-- タスクの入力欄 -->
@@ -42,7 +52,7 @@
                 <!-- リスト(箇条書き終了) --> 
                 
             
-                <h2>Post-arrival Tasks</h2>
+                <h2 id="post-arrival-heading">Post-arrival Tasks</h2>
 
                 <div class="task-input-area">      <!-- divで箱を設置 -->
                     <input
@@ -66,4 +76,3 @@
         </body>
         <!-- 画面部分終了 -->
 </html>
-

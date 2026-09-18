@@ -4,25 +4,30 @@ A web application that helps working holiday travelers manage their preparation 
 
 ## Description
 Working Holiday Guide is a web application that helps people prepare for and manage their working holiday journey.
-Users can organise pre-arrival and post-arrival tasks, view and edit task details, access country-specific information, and track their progress with a progress bar.
+Users can organise pre-arrival and post-arrival tasks, view and edit task details, access country-specific information, switch between English and Japanese, and track their progress.
 
 ## Features
 
 - Pre-arrival and post-arrival task checklists
-- Default tasks with descriptions in both checklists
-- Dynamic progress tracking with a percentage and progress bar
+- Eight default tasks with descriptions and task-specific information
+- English and Japanese display switching without resetting task or filter states
+- Dynamic progress tracking with a sticky percentage, progress bar, and remaining task count
 - Add custom tasks, edit their titles and delete them in either checklist
-- Show and hide descriptions with Details / Hide Details
+- Expand and collapse task details
 - Edit descriptions with Edit Details and Save for both default and custom tasks
-- Organised Description, Visa Information, Tax Information, and Bank Information sections
-- Country selection for New Zealand and Australia with links to official visa and tax websites
-- Recommended bank lists for each country with links to the banks' official websites
+- Organised Description and Information sections for Visa, Flight, Accommodation, Resume, Bank, Tax, Mobile, and Job tasks
+- Country selection for New Zealand and Australia
+- Links to official visa and tax websites
+- Country-specific bank, mobile provider, job site, and resume resource recommendations
+- Flight search and accommodation service recommendations
+- Country-specific resume tips
+- External resources open in a new browser tab
 - Save custom task titles, descriptions and all checkbox states using localStorage, and restore them after reloading
 - Add tasks with the Add Task button or Enter key
 - Filter tasks by All, Active, and Completed
-- Responsive layout for desktop and mobile screens
+- Responsive layout for desktop and mobile screens, including narrow 320px and 375px widths
 
-Default task titles cannot be edited, and default tasks cannot be deleted. Changes to their descriptions last until the page is reloaded.
+Default task titles cannot be edited, and default tasks cannot be deleted. Changes to default task descriptions last until the page is reloaded. Custom task content and service, brand, and country names are not translated.
 
 ## Technologies
 
@@ -34,7 +39,8 @@ Default task titles cannot be edited, and default tasks cannot be deleted. Chang
 
 ## Future Plans
 
-- Country-specific guides
+- Save the selected language between sessions
+- Add more countries and country-specific resources
 - Dark mode
 
 ## What I Learned
@@ -45,10 +51,12 @@ Through this project, I learned:
 - Event handling
 - Data persistence with localStorage
 - JavaScript array methods
-- Managing tasks as objects with titles and descriptions
+- Managing tasks as objects with titles, descriptions, and types
 - Creating task-specific UI using an object type property
-- Dynamically updating buttons based on a selected country
-- Sharing styles across Visa, Tax, and Bank information sections
+- Dynamically updating resource buttons and resume tips based on a selected country
+- Managing translations in one object and updating existing DOM elements without rebuilding task lists
+- Preserving checkbox, filter, and custom task states while switching languages
+- Sharing styles across task-specific Information sections
 - Reusing a shared function to create pre-arrival and post-arrival task elements
 - Responsive layouts with CSS media queries
 - Git & GitHub workflow

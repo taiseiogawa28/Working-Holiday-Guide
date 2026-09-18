@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif; /* フォントの種類を指定 */
     margin: 0; /* 画面の余白を0にする */
-    padding: 40px 20px;    /* 上下40px, 左右20pxの余白 */
+    padding: 28px 20px;    /* 上下28px, 左右20pxの余白 */
     background-color: #f4f7fb; /* 背景色を薄い青色に設定 */
 }
 
@@ -9,14 +9,45 @@ body {
     max-width: 700px; /* 画面の最大幅を700pxに設定 */
     margin: 0 auto; /* 上下の余白は0、左右の余白は自動で中央寄せ */
     background-color: white; /* 背景色を白に設定 */
-    padding: 32px; /* 内側の余白を32pxに設定 */
+    padding: 28px 32px 32px; /* タイトル周りを少しコンパクトにする */
     border-radius: 16px; /* 角を丸くする */
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* 影をつける */
+}
+
+.language-switcher {
+    display: flex;
+    justify-content: flex-end; /* 言語切り替えボタンを右側に配置 */
+    margin-bottom: 4px;
+}
+
+#language-toggle-button {
+    padding: 8px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: white;
+    color: #111827;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#language-toggle-button:hover {
+    background-color: #f3f4f6;
 }
 
 h1 {   /* h1に適応される設定 */
     text-align: center;
     /* 文字を中央寄せ */
+    margin: 0 0 22px;
+    font-size: 30px;
+    line-height: 1.2;
+}
+
+#app-subtitle {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 15px;
+    font-weight: normal;
+    color: #64748b;
 }
 
 h2 {
@@ -31,11 +62,83 @@ li {
     font-size: 18px;   /* 文字サイズを18pxに設定 */
     background-color: #f8fafc; /* 背景色を薄い灰色に設定 */
     border-radius: 10px; /* 角を丸くする */
-    display: flex; /* 子要素を横並びにする */
-    flex-wrap: wrap; /* 狭い画面ではボタンを折り返す */
     overflow-wrap: anywhere; /* 長い英単語も枠内で折り返す */
-    align-items: center; /* 子要素を縦方向の中央に揃える */
-    gap: 10px; /* 子要素同士の間隔を10pxに設定 */
+}
+
+.task-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+}
+
+.task-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.task-title {
+    min-width: 0;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.task-title-input {
+    flex: 1;
+    min-width: 0;
+    padding: 6px 8px;
+    font-size: 16px;
+    border: 1px solid #94a3b8;
+    border-radius: 6px;
+}
+
+.task-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.task-action-button {
+    min-height: 30px;
+    padding: 5px 9px;
+    border: 1px solid #d8dee8;
+    border-radius: 7px;
+    background-color: #eef1f5;
+    color: #475569;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.task-action-button:hover {
+    background-color: #e2e8f0;
+}
+
+.details-toggle-button {
+    width: 32px;
+    padding-right: 0;
+    padding-left: 0;
+    color: #64748b;
+}
+
+.delete-task-button:hover {
+    border-color: #fecaca;
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.25);
+    outline-offset: 2px;
 }
 
 .task {
@@ -52,7 +155,7 @@ ul {
 
 .progress-container {
     width: 100%; /* 親要素の幅いっぱいに広げる */
-    height: 18px; /* プログレスバーの高さを18pxに設定 */
+    height: 12px; /* スクロール時に場所を取りすぎない高さにする */
     background-color: #e5e7eb; /* 背景色を薄い灰色に設定 */
     border-radius: 999px; /* 角を丸くする（999pxにすることで完全な円形になる） */
     overflow: hidden; /* 子要素が親要素からはみ出さないようにする */
@@ -130,25 +233,25 @@ ul {
     flex-basis: 100%; /* 詳細エリアはタスクの下に1行分の幅で表示する */
     min-width: 0; /* 狭い画面で詳細エリアがはみ出さないようにする */
     display: grid;
-    gap: 12px; /* DescriptionとVisa Informationの間隔を設定 */
+    gap: 10px; /* Descriptionと各Informationセクションの間隔を設定 */
     padding-top: 4px;
 }
 
 .detail-section {
-    padding: 12px; /* 小さなセクションの内側に余白をつける */
+    padding: 10px 12px; /* 読みやすさを保ちながら余白を少しコンパクトにする */
     background-color: #ffffff; /* タスクカードより少し明るい背景色にする */
     border: 1px solid #e2e8f0; /* 薄い枠線で内容を区切る */
     border-radius: 8px; /* タスクカードに合わせて角を丸くする */
 }
 
 .detail-heading {
-    margin: 0 0 10px;
+    margin: 0 0 8px;
     font-size: 15px;
     color: #1f2937;
 }
 
 .description-content p {
-    margin: 0 0 10px;
+    margin: 0 0 8px;
     font-size: 14px;
     line-height: 1.5;
     color: #555;
@@ -156,7 +259,7 @@ ul {
 
 .description-content input {
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     padding: 8px 10px;
     border: 1px solid #d1d5db;
     border-radius: 8px;
@@ -195,7 +298,7 @@ li input[type="text"] {
 }
 
 .information-label {
-    margin-top: 16px; /* Country選択と次の情報グループの間に余白をつける */
+    margin-top: 12px; /* Country選択と次の情報グループの間に余白をつける */
 }
 
 .information-section select {
@@ -233,27 +336,107 @@ li input[type="text"] {
     background-color: #1d4ed8;
 }
 
-.bank-section > select {
+.recommendation-section > select {
     width: 240px; /* Country選択は読みやすい幅にし、狭い画面では親要素に収める */
 }
 
-.bank-buttons {
-    display: flex; /* デスクトップでは銀行ボタンを横並びにする */
+/* 推奨サイトやサービスのボタンをまとめて設定 */
+.recommendation-buttons {
+    display: flex; /* デスクトップではボタンを横並びにする */
     flex-wrap: wrap; /* 狭い画面では自然に折り返す */
     gap: 8px;
 }
 
+.resume-tips {
+    margin: 0;
+    padding-left: 20px; /* 箇条書きのマーカーを表示する余白 */
+    list-style: disc;
+}
+
+.progress-section {  /* 進捗バーと未完了タスク数の表示をまとめる */
+    position: sticky; /* 画面をスクロールしても常に表示されるようにする */
+    top: 12px;
+    z-index: 10; /* 他の要素より前面に表示する */
+
+    background-color: white;
+    padding: 10px 14px; /* Sticky表示を少しコンパクトにする */
+    margin-bottom: 16px; /* 下側の余白を少し縮める */
+
+    border: 1px solid #e2e8f0; /* 薄い枠線で内容を区切る */
+    border-radius: 12px; /* 角を丸くする */
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 影をつける */
+}
+
+.progress-info { /* 進捗バーと未完了タスク数の表示を横並びにする */
+    display: flex; /* 子要素を横方向に並べる */
+    justify-content: space-between; /* 進捗バーと未完了タスク数の間隔を最大化する */
+    align-items: center; /* 進捗バーと未完了タスク数を縦方向の中央に揃える */
+}
+
+.progress-info p { /* 進捗バーと未完了タスク数のテキストに適応される設定 */
+    margin: 0 0 6px; /* プログレスバーとの間隔を少し縮める */
+    font-size: 13px; /* Sticky表示を少しコンパクトにする */
+    font-weight: bold; /* 文字を太字にする */
+    color: #374151; /* 文字色を濃い灰色に設定 */
+}
+
+.resume-tips li {
+    display: list-item; /* 通常のタスクカードではなく箇条書きとして表示する */
+    margin: 4px 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    background-color: transparent;
+    border-radius: 0;
+}
+
 @media (max-width: 600px) { /* 画面幅が600px以下の場合のスタイル */
     body {
-        padding: 20px 12px;
+        padding: 12px 10px;
     }
 
     .app-container {
-        padding: 20px;
+        padding: 16px 14px 20px;
     }
 
     h1 {
-        font-size: 28px;
+        margin-bottom: 16px;
+        font-size: 25px;
+    }
+
+    #app-subtitle {
+        font-size: 13px;
+    }
+
+    .progress-section {
+        top: 6px;
+        padding: 9px 11px;
+        margin-bottom: 14px;
+    }
+
+    li {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .task-row {
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .task-actions {
+        max-width: 130px;
+    }
+
+    .task-action-button {
+        min-height: 28px;
+        padding: 4px 7px;
+        font-size: 12px;
+    }
+
+    .details-toggle-button {
+        width: 30px;
     }
 
     .task-input-area {
@@ -273,7 +456,7 @@ li input[type="text"] {
         flex-grow: 1; /* 狭い画面で折り返した場合はボタンを見やすい幅に広げる */
     }
 
-    .bank-buttons button {
-        flex: 1 1 auto; /* スマホでは銀行ボタンを折り返しながら見やすい幅にする */
+    .recommendation-buttons button {
+        flex: 1 1 auto; /* スマホではボタンを折り返しながら見やすい幅にする */
     }
 }
